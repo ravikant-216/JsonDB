@@ -1,0 +1,22 @@
+{
+  "name": "json-db",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "json-server": "^0.17.4",
+    "bcryptjs": "^2.4.3",
+    "json-server-auth": "^2.1.0",
+    "json-to-csv-export": "^3.1.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
