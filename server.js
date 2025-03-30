@@ -28,7 +28,8 @@ const authenticateToken = (req, res, next) => {
   if (
     req.path === "/user/login" ||
     req.path === "/user/signup" ||
-    req.path === "/user/remove"
+    req.path === "/user/remove" ||
+    req.path === "/health"
   ) {
     return next();
   }
