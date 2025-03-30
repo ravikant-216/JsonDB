@@ -101,7 +101,7 @@ server.post("/user/login", (req, res) => {
 });
 server.use(router);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 4000;
 const serverInstance = server.listen(PORT, () => {
   console.log(`✅ JSON Server up on port ${PORT}`);
 });
