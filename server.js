@@ -59,6 +59,9 @@ server.use(restrictMethods);
 server.use(auth);
 server.use(authenticateToken);
 
+server.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
 server.delete("/user/remove", (req, res) => {
   if (!req.body.email || !req.body.id) {
     return res.status(400).json({ message: "Email and ID are required." });
