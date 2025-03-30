@@ -10,7 +10,7 @@ const SECRET_KEY = "ProjectSecretKey";
 
 server.db = router.db;
 const restrictMethods = (req, res, next) => {
-  const restrictedMethods = ["PUT", "POST", "DELETE"];
+  const restrictedMethods = ["PUT", "DELETE"];
   if (restrictedMethods.includes(req.method) && !isWhitelisted(req.path)) {
     return res.status(403).json({
       message: `${req.method} is not allowed for this endpoint.`,
