@@ -21,7 +21,12 @@ describe("User Authentication API", () => {
     serverInstance.close();
     console.log("Server closed after tests.");
   });
+  test("GET /health should return status 200 with { status: 'ok' }", async () => {
+    const res = await request(server).get("/health");
 
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ status: "ok" });
+  });
   test("Signup - should create a new user", async () => {
     const res = await request(server).post("/user/signup").send({
       email: testEmail,
