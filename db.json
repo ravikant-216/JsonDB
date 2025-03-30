@@ -2289,40 +2289,14 @@
   ],
   "users": [
     {
-      "id": "1",
-      "name": "Admin",
-      "email": "admin@example.com",
-      "password": "Admin123@"
+      "email": "ravi@gmail.com",
+      "password": "$2a$10$5JOXUL6NDHfL8fthAZ1v1OEe7Pj9qY.a3XUob9ssC.dSKufuetf8a",
+      "id": 1
     },
     {
-      "id": "2",
-      "name": "User",
-      "email": "user@example.com",
-      "password": "user123"
-    },
-    {
-      "name": "admin",
-      "email": "jinan@gmail.com",
-      "password": "Jinan@123",
-      "id": "3"
-    },
-    {
-      "name": "admin",
-      "email": "admin1@example.com",
-      "password": "Admin2@123",
-      "id": "6XmbJ8c"
-    },
-    {
-      "email": "ravi@12.com",
-      "password": "$2a$10$KzGmH4WAf8/saBJSg4ilW.i/f.LGkPAjeiNrSBMFUJVz60aYPE7MW",
-      "name": "Ravi",
-      "id": "DL7nLqR"
-    },
-    {
-      "email": "aman@123.com",
-      "password": "$2a$10$bmNP2bpurYlf4cbWUYH4dOpmJZrgtXqp.6j9Hjr/2e38kzRGTUtS2",
-      "name": "Aman Gupta",
-      "id": "6k49NfV"
+      "email": "ravi1@gmail.com",
+      "password": "$2a$10$3G.F9EdRHPsz7d7DLdKMzOL1L7j.dKfWTbusN5p1akBiNOl0I80h.",
+      "id": 3
     }
   ],
   "verification_record": [

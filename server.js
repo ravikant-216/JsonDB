@@ -20,12 +20,16 @@ const restrictMethods = (req, res, next) => {
 };
 
 const isWhitelisted = (path) => {
-  const whitelistedPaths = ["/user/login", "/user/signup"];
+  const whitelistedPaths = ["/user/login", "/user/signup", "/user/remove"];
   return whitelistedPaths.includes(path);
 };
 
 const authenticateToken = (req, res, next) => {
-  if (req.path === "/user/login" || req.path === "/user/signup") {
+  if (
+    req.path === "/user/login" ||
+    req.path === "/user/signup" ||
+    req.path === "/user/remove"
+  ) {
     return next();
   }
 
@@ -54,36 +58,18 @@ server.use(restrictMethods);
 server.use(auth);
 server.use(authenticateToken);
 
-server.post("/user/signup", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-    const existingUser = server.db.get("users").find({ email }).value();
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists." });
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = {
-      id: Math.random().toString(36).substr(2, 9),
-      name,
-      email,
-      password: hashedPassword,
-    };
-
-    server.db.get("users").push(newUser).write();
-
-    res.status(201).json({
-      message: "User registered successfully.",
-      user: { id: newUser.id, name: newUser.name, email: newUser.email },
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error." });
+server.delete("/user/remove", (req, res) => {
+  if (!req.body.email || !req.body.id) {
+    return res.status(400).json({ message: "Email and ID are required." });
   }
+  const { email, id } = req.body;
+  const user = server.db.get("users").find({ email, id }).value();
+  if (!user) {
+    return res.status(404).json({ message: "User not found." });
+  }
+  server.db.get("users").remove({ email, id }).write();
+  res.json({ message: "User deleted successfully." });
 });
-
 server.post("/user/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -116,6 +102,7 @@ server.post("/user/login", (req, res) => {
 server.use(router);
 
 const PORT = 3001;
-server.listen(PORT, () => {
-  console.log(`✅ JSON Server is running on port ${PORT}`);
+const serverInstance = server.listen(PORT, () => {
+  console.log(`✅ JSON Server up on port ${PORT}`);
 });
+module.exports = { server, serverInstance };
