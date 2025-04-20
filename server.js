@@ -8,7 +8,10 @@ const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
 const SECRET_KEY = "ProjectSecretKey";
 
+// Set up the database
 server.db = router.db;
+
+// Restrict HTTP methods
 const restrictMethods = (req, res, next) => {
   const restrictedMethods = ["PUT", "DELETE"];
   if (restrictedMethods.includes(req.method) && !isWhitelisted(req.path)) {
@@ -19,11 +22,18 @@ const restrictMethods = (req, res, next) => {
   next();
 };
 
+// Define whitelisted paths
 const isWhitelisted = (path) => {
-  const whitelistedPaths = ["/user/login", "/user/signup", "/user/remove"];
+  const whitelistedPaths = [
+    "/user/login",
+    "/user/signup",
+    "/user/remove",
+    "/health",
+  ];
   return whitelistedPaths.includes(path);
 };
 
+// Authenticate token middleware
 const authenticateToken = (req, res, next) => {
   if (
     req.path === "/user/login" ||
@@ -54,14 +64,29 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+// Set up CORS for the server
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Modify for specific domains if needed
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  next();
+});
+
+// Apply middlewares
 server.use(middlewares);
 server.use(restrictMethods);
 server.use(auth);
 server.use(authenticateToken);
 
+// Health check route
 server.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
+
+// User removal route
 server.delete("/user/remove", (req, res) => {
   if (!req.body.email || !req.body.id) {
     return res.status(400).json({ message: "Email and ID are required." });
@@ -74,6 +99,8 @@ server.delete("/user/remove", (req, res) => {
   server.db.get("users").remove({ email, id }).write();
   res.json({ message: "User deleted successfully." });
 });
+
+// User login route
 server.post("/user/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -103,10 +130,15 @@ server.post("/user/login", (req, res) => {
     });
   });
 });
+
+// Use the JSON server router
 server.use(router);
 
+// Set up the port and start the server
 const PORT = process.env.PORT || 4000;
 const serverInstance = server.listen(PORT, () => {
   console.log(`✅ JSON Server up on port ${PORT}`);
 });
+
+// Export the server instance
 module.exports = { server, serverInstance };
